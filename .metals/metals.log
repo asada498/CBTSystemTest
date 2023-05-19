@@ -1,0 +1,17 @@
+2020.06.11 11:30:50 INFO  started: Metals version 0.9.0 in workspace 'D:\lavarel\blog'
+2020.06.11 11:30:51 INFO  time: initialize in 1.42s
+2020.06.11 11:30:52 WARN  no build tool detected in workspace 'D:\lavarel\blog'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2020.06.11 12:48:13 INFO  shutting down Metals
+2020.06.11 16:39:32 INFO  started: Metals version 0.9.0 in workspace 'D:\lavarel\blog'
+2020.06.11 16:39:35 INFO  time: initialize in 2.26s
+2020.06.11 16:39:37 WARN  no build tool detected in workspace 'D:\lavarel\blog'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2020.06.11 17:12:21 INFO  shutting down Metals
+2020.08.20 15:16:26 INFO  started: Metals version 0.9.2 in workspace 'D:\lavarel\blog' for client vscode.
+2020.08.20 15:16:33 INFO  time: initialize in 6.53s
+2020.08.20 15:16:40 WARN  resetting database: D:\lavarel\blog\.metals\metals.h2.db
+2020.08.20 15:16:42 WARN  no build tool detected in workspace 'D:\lavarel\blog'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2020.08.20 17:46:05 INFO  shutting down Metals
+2020.11.06 09:03:57 INFO  started: Metals version 0.9.4 in workspace 'D:\lavarel\blog' for client vscode.
+2020.11.06 09:04:01 INFO  time: initialize in 3.93s
+2020.11.06 09:04:02 WARN  no build tool detected in workspace 'D:\lavarel\blog'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2020.11.06 18:18:44 INFO  shutting down Metals

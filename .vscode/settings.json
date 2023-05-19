@@ -1,0 +1,12 @@
+{
+    "editor.fontSize": 22,
+    "files.watcherExclude": {
+        "**/target": true        
+    },
+    "launch": {
+        
+
+        "configurations": [],
+        "compounds": []
+    }
+}

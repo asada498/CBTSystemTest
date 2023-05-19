@@ -1,0 +1,128 @@
+<?php
+
+namespace App\QuestionClass\Q4\Vocabulary;
+
+class Q4S1Q4
+{
+    public $questionId;
+    public $id;
+    public $vocabulary;
+    public $partOfSpeech;
+
+    public $testeeTotalNumber;
+    public $testeeTotalCorrectAnswer;
+    public $question;
+    public $choiceA;
+    public $choiceB;
+    public $choiceC;
+    public $choiceD;
+    public $correctAnswer;
+    public $databaseIdQuestion;
+    public $newQuestion;
+
+    public function __construct(
+        $id,
+        $databaseIdQuestion,
+        $vocabulary,
+        $partOfSpeech,
+        $testeeTotalNumber,
+        $testeeTotalCorrectAnswer,
+        $question,
+        $choiceA,
+        $choiceB,
+        $choiceC,
+        $choiceD,
+        $correctAnswer,
+        $newQuestion
+    ) {
+        $this->id = $id;
+        $this->databaseIdQuestion = $databaseIdQuestion;
+        $this->vocabulary = $vocabulary;
+        $this->partOfSpeech = $partOfSpeech;
+        $this->testeeTotalNumber = $testeeTotalNumber;
+        $this->testeeTotalCorrectAnswer = $testeeTotalCorrectAnswer;
+        $this->question = $question;
+        $this->choiceA = $choiceA;
+        $this->choiceB = $choiceB;
+        $this->choiceC = $choiceC;
+        $this->choiceD = $choiceD;
+        $this->correctAnswer  = $correctAnswer;
+        $this->newQuestion = $newQuestion;
+    }
+
+    public function setQuestionId($id)
+    {
+        return $this->questionId = $id;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+    public function getvocabularyAnswer()
+    {
+        return $this->vocabulary;
+    }
+    public function getQuestionId()
+    {
+        return $this->questionId;
+    }
+    public function getQuestion()
+    {
+        $str = $this->question;
+        // $str1 = str_replace("【", "〖 ", $str);
+        // $str2 = str_replace("】", " 〗", $str1);
+        return $str;
+    }
+
+    public function getChoiceA()
+    {
+        return $this->choiceA;
+    }
+
+    public function getChoiceB()
+    {
+
+        return $this->choiceB;
+    }
+
+    public function getChoiceC()
+    {
+        return $this->choiceC;
+    }
+
+    public function getChoiceD()
+    {
+        return $this->choiceD;
+    }
+    public function setAnswer($correct)
+    {
+        return $this->correct = $correct;
+    }
+    public function getCorrectChoice()
+    {
+        $correctAnswer = $this->correctAnswer;
+        return mb_convert_kana($correctAnswer, "KVr");
+    }
+
+    public function getPartOfSpeech()
+    {
+        return $this->partOfSpeech;
+    }
+
+
+    public function gettesteeTotalNumber()
+    {
+        return $this->testeeTotalNumber;
+    }
+
+    public function getDatabaseQuestionId()
+    {
+        return $this->databaseIdQuestion;
+    }
+
+    public function checkNewQuestion()
+    {
+        return $this->newQuestion;
+    }
+}

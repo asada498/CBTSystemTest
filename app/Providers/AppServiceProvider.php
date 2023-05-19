@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        //
+        // if (!$this->app->isLocal()) {
+        //     $this->app['request']->server->set('HTTPS', true);
+        // }
+            // \URL::forceScheme('https');
+
+        // parent::boot();
+        // if (!\URL::contains("NAT-TEST"))
+        //     dd("STOP");
+        // dd($this->app['request']->getHost());
+        // if(!($this->app['request']::contains("NAT-TEST")))
+        //     dd("stop");
+    }
+}
