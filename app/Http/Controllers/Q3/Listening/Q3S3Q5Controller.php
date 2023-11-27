@@ -191,7 +191,7 @@ class Q3S3Q5Controller extends Controller
         $anchorScoreQ3S3Q2 =  Session::get( $userID.'.Q3S3Q2Score_anchor');
         $anchorScoreQ3S3Q5 =  Session::get( $userID.'.Q3S3Q5Score_anchor');
         $currentAnchorScore = $anchorScoreQ3S1Q1+$anchorScoreQ3S1Q3+$anchorScoreQ3S2Q1+$anchorScoreQ3S3Q1+$anchorScoreQ3S3Q2+$anchorScoreQ3S3Q5;
-        $currentAnchorPassRate = round($currentAnchorScore/8.823755*100);
+        $currentAnchorPassRate = round($currentAnchorScore/9.53704174*100);
         Grades::where('examinee_number', substr($userID, 1))->where('level', 3)->update([
             'anchor_score' => $currentAnchorScore,
             'anchor_pass_rate' => $currentAnchorPassRate,

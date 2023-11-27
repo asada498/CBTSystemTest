@@ -163,7 +163,7 @@ class Q4S2Q6Controller extends Controller
         $currentAnchorPassRate = round($currentAnchorScore /
                                         (5.25 / 80 * 120 / 7 +
                                         6    / 80 * 120 / 8 +
-                                        13.5 / 80 * 120 / 13 +
+                                        13.5 / 80 * 120 / 13 * 2 +
                                         10.5 / 35 * 60 / 8 +
                                         10.5 / 35 * 60 / 7 +
                                         7.5  / 35 * 60 / 8)

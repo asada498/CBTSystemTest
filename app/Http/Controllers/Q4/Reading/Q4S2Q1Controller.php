@@ -75,8 +75,7 @@ class Q4S2Q1Controller extends Controller
                 array_push($correctAnswer, $question->getId());
 
                 if ($question->getAnchor() == 'R') {
-                    $anchorPassFlag = 1;
-                    Session::put($userID.".Q4S2Q1Score_anchor", 13.5 / 80 * 120 / 13);
+                    $anchorPassFlag += 1;
                 }
             } else {
                 if ($question->getCorrectChoice() == null)
@@ -114,26 +113,15 @@ class Q4S2Q1Controller extends Controller
 
         
         $s2Q1Rate = round($scoring * 100 / 13);
+        Session::put($userID.".Q4S2Q1Score_anchor", 13.5 / 80 * 120 / 13 * $anchorPassFlag);
 
-
-        if ($anchorPassFlag == 1) {
-
-            ScoreSummary::where('examinee_number', substr($userID, 1))->where('level', 4)->update([
-                    's2_q1_correct' => $scoring,
-                    's2_q1_question' => 13,
-                    's2_q1_perfect_score' => 13.5 / 80 * 120,
-                    's2_q1_anchor_pass' => 1,
-                    's2_q1_rate' => $s2Q1Rate
-                ]);
-        } else {
-
-            ScoreSummary::where('examinee_number', substr($userID, 1))->where('level', 4)->update([
+        ScoreSummary::where('examinee_number', substr($userID, 1))->where('level', 4)->update([
                 's2_q1_correct' => $scoring,
                 's2_q1_question' => 13,
                 's2_q1_perfect_score' => 13.5 / 80 * 120,
+                's2_q1_anchor_pass' => $anchorPassFlag,
                 's2_q1_rate' => $s2Q1Rate
-                ]);
-        }
+            ]);
 
         // $request->session()->flush();
         foreach(Session::get($userID) as $key => $obj)

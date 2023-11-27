@@ -191,7 +191,7 @@ class Q1S3Q5Controller extends Controller
                               $anchorScoreQ1S3Q1 + 
                               $anchorScoreQ1S3Q2 + 
                               $anchorScoreQ1S3Q4;
-        $currentAnchorPassRate = round($currentAnchorScore / 7.4288961038961 * 100);
+        $currentAnchorPassRate = round($currentAnchorScore / 9.14622195985832 * 100);
         Grades::where('examinee_number', substr($userID, 1))->where('level', 1)->update([
             'anchor_score' => $currentAnchorScore,
             'anchor_pass_rate' => $currentAnchorPassRate,

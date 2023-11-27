@@ -93,8 +93,7 @@ class Q3S2Controller extends Controller
                 array_push($correctAnswer, $question->getId());
 
                 if ($question->getAnchor() == '1') {
-                    $anchorPassFlag = 1;
-                    Session::put($userID.".Q3S2Q1Score_anchor", 8.5 / 55 * 60 / 13);
+                    $anchorPassFlag += 1;
                 }
             } else {
                 if ($question->getCorrectChoice() == null)
@@ -148,47 +147,16 @@ class Q3S2Controller extends Controller
             "past_testee_number" => Q3Section2Question1::raw("past_testee_number + 1")
         ]);
 
-        // foreach($correctAnswer as $correct)
-        // {
-        //     $question = Q3Section2Question1::where('id', $correct)->first();
-        //     if($question->new_question and $question->past_testee_number >= 400)
-        //     {
-        //         $question->new_question=0;
-        //         $question->save();
-        //     }
-        // }
-
-        // foreach($incorrectAnswer as $incorrect)
-        // {
-        //     $question = Q3Section2Question1::where('id', $incorrect)->first();
-        //     if($question->new_question and $question->past_testee_number >= 400)
-        //     {
-        //         $question->new_question=0;
-        //         $question->save();
-        //     }
-        // }
-
         $s2Q1Rate = round($scoring * 100 / 13);
+        Session::put($userID.".Q3S2Q1Score_anchor", 8.5 / 55 * 60 / 13 * $anchorPassFlag);
 
-
-        if ($anchorPassFlag == 1) {
-
-            ScoreSummary::where('examinee_number', substr($userID, 1))->where('level', 3)->update([
-                    's2_q1_correct' => $scoring,
-                    's2_q1_question' => 13,
-                    's2_q1_perfect_score' => 8.5/55*60,
-                    's2_q1_anchor_pass' => 1,
-                    's2_q1_rate' => $s2Q1Rate
-                ]);
-        } else {
-
-            ScoreSummary::where('examinee_number', substr($userID, 1))->where('level', 3)->update([
+        ScoreSummary::where('examinee_number', substr($userID, 1))->where('level', 3)->update([
                 's2_q1_correct' => $scoring,
                 's2_q1_question' => 13,
                 's2_q1_perfect_score' => 8.5/55*60,
+                's2_q1_anchor_pass' => $anchorPassFlag,
                 's2_q1_rate' => $s2Q1Rate
-                ]);
-        }
+            ]);
 
         // $request->session()->flush();
         foreach(Session::get($userID) as $key => $obj)
@@ -970,7 +938,7 @@ class Q3S2Controller extends Controller
         $anchorScoreQ3S1Q3 =  Session::get( $userID.'.Q3S1Q3Score_anchor');
         $anchorScoreQ3S2Q1 =  Session::get( $userID.'.Q3S2Q1Score_anchor');
         $currentAnchorScore = $anchorScoreQ3S1Q1+$anchorScoreQ3S1Q3+$anchorScoreQ3S2Q1;
-        $currentAnchorPassRate = round($currentAnchorScore/ 10.237335*100);
+        $currentAnchorPassRate = round($currentAnchorScore/ 9.53704174*100);
         
         Grades::where('examinee_number', substr($userID, 1))->where('level', 3)->update([
             'anchor_score' => $currentAnchorScore,

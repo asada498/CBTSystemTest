@@ -70,15 +70,12 @@ class Q1S1Q5Controller extends Controller
                         $anchorFlag = 0;
                 else $anchorFlag = 1;
                 
-                
-                
                 if ($question->getCorrectChoice() == $userAnswer)
                 {
                     $correctFlag = 1;
                     if ($anchorFlag == 1)
                     {
-                        $anchorFlagResult = 1;
-                        Session::put($userID.".Q1S1Q5Score_anchor", 5.5/40*60/10);
+                        $anchorFlagResult += 1;
                     }
                     $scoring++;
                     array_push($correctAnswer,$question->getId());
@@ -136,27 +133,8 @@ class Q1S1Q5Controller extends Controller
             ]);
         }
 
-        // foreach($correctAnswer as $correct)
-        // {
-        //     $question = Q1Section1Question5::where('id', $correct)->first();
-        //     if($question->new_question and $question->past_testee_number >= 400)
-        //     {
-        //         $question->new_question=0;
-        //         $question->save();
-        //     }
-        // }
-
-        // foreach($incorrectAnswer as $incorrect)
-        // {
-        //     $question = Q1Section1Question5::where('id', $incorrect)->first();
-        //     if($question->new_question and $question->past_testee_number >= 400)
-        //     {
-        //         $question->new_question=0;
-        //         $question->save();
-        //     }
-        // }
-
         $s1Q5Rate = round($scoring * 100 / 10);
+        Session::put($userID.".Q1S1Q5Score_anchor", 5.5/40*60/10 * $anchorFlagResult);
 
         ScoreSummary::where('examinee_number',substr($userID, 1))->update([
             's1_q5_correct' => $scoring,
@@ -165,7 +143,7 @@ class Q1S1Q5Controller extends Controller
             's1_q5_anchor_pass' => $anchorFlagResult,
             's1_q5_rate' => $s1Q5Rate
         ]);
-        //dd(session());
+
         foreach(Session::get($userID) as $key => $obj)
             {
                 if (str_starts_with($key,'Q1S1Q5'))

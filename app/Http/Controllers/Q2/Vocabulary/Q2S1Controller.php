@@ -934,8 +934,7 @@ class Q2S1Controller extends Controller
                     $correctFlag = 1;
                     if ($anchorFlag == 1)
                     {
-                        $anchorFlagResult = 1;
-                        Session::put($userID.".Q2S1Q7Score_anchor", 7/45*60/12);
+                        $anchorFlagResult += 1;
                     }
                     $scoring++;
                     array_push($correctAnswer,$question->getId());
@@ -993,27 +992,8 @@ class Q2S1Controller extends Controller
             ]);
         }
 
-        // foreach($correctAnswer as $correct)
-        // {
-        //     $question = Q2Section1Question7::where('id', $correct)->first();
-        //     if($question->new_question and $question->past_testee_number >= 400)
-        //     {
-        //         $question->new_question=0;
-        //         $question->save();
-        //     }
-        // }
-
-        // foreach($incorrectAnswer as $incorrect)
-        // {
-        //     $question = Q2Section1Question7::where('id', $incorrect)->first();
-        //     if($question->new_question and $question->past_testee_number >= 400)
-        //     {
-        //         $question->new_question=0;
-        //         $question->save();
-        //     }
-        // }
-
         $s1Q7Rate = round($scoring * 100 / 12);
+        Session::put($userID.".Q2S1Q7Score_anchor", 7/45*60/12 * $anchorFlagResult);
 
         ScoreSummary::where('examinee_number',substr($userID, 1))->update([
             's1_q7_correct' => $scoring,
@@ -1022,7 +1002,7 @@ class Q2S1Controller extends Controller
             's1_q7_anchor_pass' => $anchorFlagResult,
             's1_q7_rate' => $s1Q7Rate
         ]);
-        //dd(session());
+
         foreach(Session::get($userID) as $key => $obj)
             {
                 if (str_starts_with($key,'Q2S1Q7'))
@@ -1968,7 +1948,7 @@ class Q2S1Controller extends Controller
         $anchorScoreQ2S1Q4 =  Session::get( $userID.'.Q2S1Q4Score_anchor');
         $anchorScoreQ2S1Q7 =  Session::get( $userID.'.Q2S1Q7Score_anchor');
         $currentAnchorScore = $anchorScoreQ2S1Q2+$anchorScoreQ2S1Q4+$anchorScoreQ2S1Q7;
-        $currentAnchorPassRate = round($currentAnchorScore/ 8.313492063*100);
+        $currentAnchorPassRate = round($currentAnchorScore/ 9.09126984126*100);
         
         Grades::where('examinee_number', substr($userID, 1))->where('level', 2)->update([
             'anchor_score' => $currentAnchorScore,

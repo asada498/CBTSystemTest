@@ -141,12 +141,11 @@ class Q5S1Q4Controller extends Controller
         $anchorScoreQ5S1Q1 =  Session::get( $userID.'.Q5S1Q1Score_anchor');
         $anchorScoreQ5S1Q3 =  Session::get( $userID.'.Q5S1Q3Score_anchor');
         $currentAnchorScore = $anchorScoreQ5S1Q1+$anchorScoreQ5S1Q3;
-        $currentAnchorPassRate = round($currentAnchorScore/ 12.587302*100);
+        $currentAnchorPassRate = round($currentAnchorScore/ 14.365079365*100);
         Grades::where('examinee_number', substr($userID, 1))->where('level', 5)->update([
-
-            'anchor_score' => $currentAnchorScore,
+            'anchor_soten' => $currentAnchorScore,
             'anchor_pass_rate' => $currentAnchorPassRate,
-            'sec1_score' => $section1Total
+            'sec1_soten' => $section1Total
         ]);
         foreach(Session::get($userID) as $key => $obj)
         {

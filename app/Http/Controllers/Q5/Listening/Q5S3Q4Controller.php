@@ -188,15 +188,15 @@ class Q5S3Q4Controller extends Controller
         $currentAnchorPassRate = round($currentAnchorScore /
                                         (5.5 / 60 * 120 / 7 +
                                            5 / 60 * 120 / 6 +
-                                           8 / 60 * 120 / 9 +
+                                           8 / 60 * 120 / 9 * 2 +
                                            9 / 30 * 60 / 7 +
                                            9 / 30 * 60 / 6 +
                                            6 / 30 * 60 / 6)
                                         * 100 );
         Grades::where('examinee_number', substr($userID, 1))->where('level', 5)->update([
-            'anchor_score' => $currentAnchorScore,
+            'anchor_soten' => $currentAnchorScore,
             'anchor_pass_rate' => $currentAnchorPassRate,
-            'sec3_score' => $section3Total
+            'sec3_soten' => $section3Total
             ]);
 
         $scoreQ5S3Q4 = Session::get('Q5S3Q4Score');
@@ -227,49 +227,83 @@ class Q5S3Q4Controller extends Controller
         $totalScore = $section1And2Total + $section3Total;
         $s12Rate = $section1And2Total / 120;
         $s3Rate  = $section3Total / 60;
-        $passFlag = 0;
-        // if ($s1Rate >= 0.25 && $s2Rate >= 0.25 && $s3Rate >= 0.25)
-        if ($s12Rate >= 0.25 && $s3Rate >= 0.25)
-        {
-            if ($totalScore >= 110)
-                $passFlag = 1;
-            else if ($totalScore >= 80 && $totalScore < 110)
-            {
-                $passRateAnchor = Grades::where('examinee_number',$realUserId)->first()->anchor_pass_rate;
-                if ($passRateAnchor >= 60)
-                    $passFlag = 1;
-            }
-        }
-        // $informationTotal = [
-        //     's3Total' => $section3Total,
-        //     'totalScore' => $totalScore,
-        //     's3Rate' => $s3Rate
-        // ];
-        // dd($informationTotal);
-        // $testInformationQuery = TestInformation::where('examinee_id',$realUserId)->first();
-        // $userInformationQuery = ExamineeInformation::where('examinee_id',$realUserId)->first();
-        // $testDay = $testInformationQuery->test_day;
-        // $testDayString = explode("-",$testDay);
-        // $testDayModified = $testDayString[0]."年　".$testDayString[1]."月　".$testDayString[2]."日";
-        // $testSiteCode = $testInformationQuery->test_site;
-        // $testSiteCity = TestSiteInformation::where('test_site',$testSiteCode)->first()->city;
-        ScoreSummary::where('examinee_number',$realUserId)->update([
-            's3_score' => $section3Total,
-            'score' => $totalScore,
-            's3_rate'=>$s3Rate
+        Grades::where('examinee_number',substr($userID, 1))->update([
+            'score3_soten' => $section3Total,
+            'soten' => $totalScore
         ]);
+ 
+        $passFlag = 0;
+        // 合否判定
+        $tokuten = round($this->tokuten($totalScore));
+        $tokuten12 = round($tokuten * $section1And2Total / $totalScore);
+        $tokuten3 = round($tokuten * $section3Total / $totalScore);
+
+        if($tokuten >= 113){
+            if(($tokuten12 >= 38) and ($tokuten3 >= 19)){
+                $passFlag = 1;
+            }else{
+                $passFlag = 0;
+            }
+        }else if ($tokuten < 74) {
+            $passFlag = 0;
+        }else{
+            if($currentAnchorPassRate >= 50){
+                $tokuten12 = round($tokuten * $section1And2Total / $totalScore);
+                $tokuten3 = round($tokuten * $section3Total / $totalScore);
+                if(($tokuten12 >= 38) and ($tokuten3 >= 19)){
+                    $tokuten = 80;
+                    $passFlag = 1;
+                }else{
+                    $tokuten = 79;
+                    $passFlag = 0;                    
+                }
+            }else{
+                $tokuten = 79;
+                $passFlag = 0;
+            }
+            $tokuten12 = round($tokuten * $section1And2Total / $totalScore);
+            $tokuten3 = round($tokuten * $section3Total / $totalScore);
+        }
+
         Grades::where('examinee_number',$realUserId)->update([
+            'score' => $tokuten,
+            'sec1_score' => $tokuten12,
+            'sec2_score' => $tokuten3,
             'pass_fail' => $passFlag
         ]);
-        // $testeeInformation = [
-        //     "id" => $realUserId,
-        //     "name"=> $userInformationQuery->name,
-        //     "date" => $testDayModified,
-        //     "place"=> $testSiteCity
-        // ];
+
+        // if ($s12Rate >= 0.25 && $s3Rate >= 0.25)
+        // {
+        //     if ($totalScore >= 110)
+        //         $passFlag = 1;
+        //     else if ($totalScore >= 80 && $totalScore < 110)
+        //     {
+        //         $passRateAnchor = Grades::where('examinee_number',$realUserId)->first()->anchor_pass_rate;
+        //         if ($passRateAnchor >= 60)
+        //             $passFlag = 1;
+        //     }
+        // }
+
+        ScoreSummary::where('examinee_number',$realUserId)->update([
+            'sec3_soten' => $section3Total,
+            'soten' => $totalScore,
+            's3_rate'=>$s3Rate
+        ]);
+
         return Redirect::to(url('/Gradehomepage'));
     }
    
+    function tokuten(float $soten)
+    {
+        if($soten >= 113){
+            return 180 - (100 / 66) * (180 - $soten);
+        }else if($soten < 74){
+            return 79 - (79 / 73) * (73 - $soten);
+        }else{
+            return 80;
+        }
+    }
+
     function fetchData(Request $request)
     {
         if ($request->ajax()) {
